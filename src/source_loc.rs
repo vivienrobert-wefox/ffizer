@@ -7,7 +7,7 @@ use std::fs;
 use std::path::PathBuf;
 use tracing::warn;
 
-#[derive(Args, Debug, Default, Clone, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Args, Debug, Default, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[serde(deny_unknown_fields, default)]
 pub struct SourceLoc {
     /// uri / path of the template
@@ -99,11 +99,11 @@ impl fmt::Display for SourceLoc {
             self.rev
                 .as_ref()
                 .map(|s| format!("rev: '{}' ", s))
-                .unwrap_or_else(|| "".to_string()),
+                .unwrap_or_default(),
             self.subfolder
                 .as_ref()
                 .map(|s| format!("subfolder: '{}'", s.to_string_lossy()))
-                .unwrap_or_else(|| "".to_string())
+                .unwrap_or_default()
         )
     }
 }
