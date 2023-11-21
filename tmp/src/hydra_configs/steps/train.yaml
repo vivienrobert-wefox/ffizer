@@ -1,0 +1,16 @@
+# @package steps.train
+defaults:
+  - /data: mydatamodule
+  - /bentoml: default
+  - /model: mymodule
+  - /trainer: default
+  - /logger: neptune
+  - /callbacks: default
+  - _self_
+
+_target_: "ilil.steps.train.train"
+
+run_name: "train"
+
+seed: 47
+batch_size: 8

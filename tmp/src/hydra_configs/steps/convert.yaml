@@ -1,0 +1,9 @@
+# @package steps.convert
+defaults:
+  - /bentoml: default
+  - /data: mydatamodule
+  - /model: mymodule
+  - _self_
+
+_target_: "ilil.steps.convert.convert"
+batch_size: 1

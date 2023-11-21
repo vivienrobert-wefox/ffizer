@@ -1,0 +1,14 @@
+# Enable steps through command line or experiments
+defaults:
+  - /hydra: default
+  - /paths: default
+  - /neptune: online
+  - /steps: ???
+  - _self_
+  # experiment configs allow for version control of specific hyperparameters
+  # e.g. best hyperparameters for given model and datamodule
+  - optional /experiment: null
+  # debugging config (enable through command line, e.g. `python train.py dev=default)
+  - optional /dev: null
+
+run_name: "base"

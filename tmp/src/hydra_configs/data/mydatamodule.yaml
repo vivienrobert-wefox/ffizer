@@ -1,0 +1,9 @@
+defaults:
+  - default
+
+_target_: "ilil.data.mydatamodule.MyDataModule"
+train_percentage: 0.8
+batch_size: ${batch_size}
+
+custom_component:
+  _target_: "ilil.data.components.mycomponent.MyComponent"

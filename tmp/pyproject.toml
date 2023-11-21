@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "ioio"
+version = "0.1.0"
+description = ""
+authors = ["vivien.robert <vivien.robert@wefox.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10.9"
+loguru = "^0.5.3"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+pytest = "^7.2.2"
+
+[[tool.poetry.source]]
+name = "wefox"
+url = "https://registry.wefox.io/repository/pypi/simple/"
+secondary = true
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+extend-exclude = '''
+/(
+  | tests
+  | devops
+)/
+'''
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,2 @@
+registry_path: "s3://wefox-ai-artifacts-all/bentoml"
+export: false

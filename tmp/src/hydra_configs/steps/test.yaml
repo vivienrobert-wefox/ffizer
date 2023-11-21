@@ -1,0 +1,18 @@
+# @package steps.test
+
+# order of defaults determines the order in which configs override each other
+# Override groups with command line by specifying group@steps.test.group
+# e.g [...] trainer@steps.test.trainer=cpu
+
+defaults:
+  - /data: mydatamodule
+  - /model: mymodule
+  - /callbacks: default
+  - /logger: neptune
+  - /trainer: default
+  - _self_
+
+_target_: "ilil.steps.test.test"
+# seed for random number generators in pytorch, numpy and python.random
+seed: 47
+batch_size: 8

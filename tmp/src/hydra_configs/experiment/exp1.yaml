@@ -1,0 +1,14 @@
+# @package _global_
+defaults:
+  - override /steps:
+    - train
+    - test
+    - convert
+  - override /paths: s3
+
+run_name: "long_train"
+
+steps:
+  train:
+    trainer:
+      max_epochs: 40

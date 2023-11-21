@@ -1,0 +1,6 @@
+# Uncomment to override value set through env variable
+# api_token: foo
+project: wefox-team/bla
+run: !!null
+name: ${run_name}
+mode: "async"

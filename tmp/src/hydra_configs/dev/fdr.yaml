@@ -1,0 +1,14 @@
+# @package _global_
+
+# runs 1 train, 1 validation and 1 test_el.json step
+
+defaults:
+  - default
+
+steps:
+  train:
+    trainer:
+      fast_dev_run: true
+  test:
+    trainer:
+      fast_dev_run: true

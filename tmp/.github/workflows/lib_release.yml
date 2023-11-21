@@ -1,0 +1,42 @@
+# This workflow is only used to release lib/exe to pypi
+# to release an exe just add into your pyproject.toml:
+# [tool.poetry.scripts]
+# my_script = "wefox_ai_xyz_xyz.script:main"
+#
+# then you can pip install the lib and use ./my_script
+
+name: Libraries Release
+on:
+  workflow_dispatch:
+    inputs:
+      upgrade_type:
+        type: choice
+        description: Choose the upgrade type
+        required: true
+        default: patch
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  devcontainer:
+    secrets: inherit
+    uses: uberforcede/wefox-ai-wai-templates/.github/workflows/_build_devcontainer.v1.yml@master
+    with:
+      APP_NAME: ${{ github.event.repository.name }}
+      AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+  python_release:
+    needs:
+      - devcontainer
+    secrets:
+      DEVCONTAINER_ECR_TOKEN: ${{ secrets.ORG_ECR_TOKEN_AI }}
+      ORG_CORE_NEXUS_CI_PWD: ${{ secrets.ORG_CORE_NEXUS_CI_PWD }}
+      ORG_CORE_NEXUS_CI_USER: ${{ secrets.ORG_CORE_NEXUS_CI_USER }}
+    uses: uberforcede/wefox-ai-wai-templates/.github/workflows/_python_lib_release.v1.yml@master
+    with:
+      DEVCONTAINER: ${{ needs.devcontainer.outputs.image_full_name }}
+      PYVERSION_PATH: src/ilil/__init__.py
+      UPGRADE_TYPE: ${{ github.event.inputs.upgrade_type }}
+      ONLY_MASTER: "true"
+

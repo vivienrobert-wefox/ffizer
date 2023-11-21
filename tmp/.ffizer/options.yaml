@@ -1,0 +1,24 @@
+variables:
+- name: author_name
+  default_value: vivien.robert <vivien.robert@wefox.com>
+- name: gitignore_what
+  default_value: git,bazel,vim,emacs,visualstudiocode,jetbrains+all,pydev,python,jupyternotebooks,virtualenv,rust,helm,macos
+- name: package_name
+  default_value: ilil
+- name: project_acronym
+  default_value: bla
+- name: project_acronym_input
+  default_value: ikik
+- name: project_name
+  default_value: ioio
+- name: project_version
+  default_value: 0.1.0
+- name: python_version
+  default_value: 3.10.9
+sources:
+- uri: ../wefox-ai-wai-templates
+  rev: master
+  subfolder: python-lightning-hydra
+- uri: ../wefox-ai-wai-templates
+  rev: master
+  subfolder: python-poetry-base

@@ -1,0 +1,4 @@
+defaults:
+  - local
+
+output_dir: "s3://wai-dev-949225605787/bla/${neptune.run}"

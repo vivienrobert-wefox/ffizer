@@ -1,0 +1,4 @@
+defaults:
+  - default
+_target_: "ilil.models.mymodule.MyModule"
+nb_classes: 10
