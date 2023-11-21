@@ -1,4 +1,5 @@
 use super::Ctx;
+use crate::cfg::TemplateComposite;
 use crate::error::*;
 use crate::variables::Variables;
 use crate::SourceLoc;
@@ -223,6 +224,59 @@ fn get_cli_variables(ctx: &Ctx) -> Result<Variables> {
         })
         .collect::<Result<Vec<()>>>()?;
     Ok(variables)
+}
+
+use crate::cfg::ImportCfg;
+use crate::cfg::TemplateCfg;
+use crate::cfg::VariableCfg;
+use crate::cfg::VariableValueCfg;
+
+pub(crate) fn make_template(source_folder: &Path, target_folder: &Path) -> Result<SourceLoc> {
+    // not ready for standalone command, only used as part of reapply for now
+    let metadata_path = source_folder
+        .join(FFIZER_DATASTORE_DIRNAME)
+        .join(OPTIONS_FILENAME);
+    let persisted: PersistedOptions =
+        { serde_yaml::from_reader(std::fs::File::open(metadata_path)?)? };
+
+    let variables: Vec<VariableCfg> = persisted
+        .variables
+        .into_iter()
+        .map(|var| VariableCfg {
+            name: var.name,
+            default_value: Some(VariableValueCfg(var.default_value)),
+            ..Default::default()
+        })
+        .collect();
+
+    let imports: Vec<ImportCfg> = persisted
+        .sources
+        .into_iter()
+        .map(|source| ImportCfg {
+            uri: source.uri,
+            rev: source.rev,
+            subfolder: source.subfolder.map(|x| x.to_string_lossy().to_string()),
+        })
+        .collect();
+
+    let template_cfg = TemplateCfg {
+        variables,
+        imports,
+        use_template_dir: true,
+        ..Default::default()
+    };
+    serde_yaml::to_writer(
+        std::fs::File::create(target_folder.join(".ffizer.yaml"))?,
+        &template_cfg,
+    )?;
+
+    std::fs::create_dir(target_folder.join("template"))?;
+
+    Ok(SourceLoc {
+        uri: SourceUri::from_str(&target_folder.to_string_lossy())?,
+        rev: None,
+        subfolder: None,
+    })
 }
 
 #[cfg(test)]

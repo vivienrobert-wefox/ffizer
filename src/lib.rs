@@ -32,7 +32,9 @@ use crate::error::*;
 use crate::files::ChildPath;
 use crate::source_file::{SourceFile, SourceFileMetadata};
 use crate::variables::Variables;
+use ctx::make_template;
 use handlebars_misc_helpers::new_hbs;
+use tempfile::tempdir;
 use std::fs;
 use std::path::{Path, PathBuf};
 use tracing::{debug, warn};
@@ -57,6 +59,25 @@ pub struct Action {
 #[derive(Debug, Clone, Default)]
 pub struct Ctx {
     pub cmd_opt: ApplyOpts,
+}
+
+pub fn reprocess(cmd_opt: ReapplyOpts) -> Result<()> {
+    let source_folder = &cmd_opt.dst_folder;
+    let temp_dir = tempdir()?;
+
+    let tmp_template = make_template(source_folder, temp_dir.path())?;
+    let new_ctx = Ctx {
+        cmd_opt: ApplyOpts {
+            confirm: cmd_opt.confirm,
+            src: tmp_template,
+            update_mode: cmd_opt.update_mode,
+            no_interaction: cmd_opt.no_interaction,
+            dst_folder: cmd_opt.dst_folder,
+            offline: cmd_opt.offline,
+            key_value: cmd_opt.key_value        
+        }
+    };
+    process(&new_ctx)
 }
 
 pub fn process(ctx: &Ctx) -> Result<()> {

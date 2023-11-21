@@ -6,6 +6,8 @@ mod template_composite;
 mod transform_values;
 mod variable_cfg;
 
+pub(crate) use import_cfg::*;
+pub(crate) use template_cfg::*;
 pub(crate) use template_composite::*;
 pub(crate) use transform_values::*;
 pub(crate) use variable_cfg::*;
